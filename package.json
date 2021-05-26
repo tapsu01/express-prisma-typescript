@@ -1,0 +1,36 @@
+{
+  "name": "express-typescript",
+  "version": "0.1.0",
+  "description": "PET project use ExpressJS with Typescript",
+  "main": "app.js",
+  "author": "Nguyen Tu<nguyentudevp@gmail.com>",
+  "license": "MIT",
+  "scripts": {
+    "ci": "git-cz",
+    "commit": "git-cz",
+    "dev": "export ENV=development && nodemon src/entrypoint.ts",
+    "start": "node dist/entrypoint",
+    "webpack": "webpack --config webpack.config.ts"
+  },
+  "dependencies": {
+    "cors": "^2.8.5",
+    "dotenv": "^10.0.0",
+    "express": "^4.17.1",
+    "helmet": "^4.6.0"
+  },
+  "devDependencies": {
+    "@types/cors": "^2.8.10",
+    "@types/dotenv": "^8.2.0",
+    "@types/express": "^4.17.12",
+    "@types/helmet": "^4.0.0",
+    "@types/node": "^15.6.1",
+    "git-cz": "^4.7.6",
+    "nodemon": "^2.0.7",
+    "ts-loader": "^9.2.2",
+    "ts-node": "^10.0.0",
+    "typescript": "^4.2.4",
+    "webpack": "^5.37.1",
+    "webpack-cli": "^4.7.0",
+    "webpack-node-externals": "^3.0.0"
+  }
+}
