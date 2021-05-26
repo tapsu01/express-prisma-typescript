@@ -5,6 +5,8 @@ import * as dotenv from 'dotenv';
 import express from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
+import { PrismaClient } from '@prisma/client';
+import User from './modules/user/index.service';
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 dotenv.config({ path: `.env.${NODE_ENV}` });
@@ -14,6 +16,7 @@ dotenv.config({ path: `.env.${NODE_ENV}` });
  */
 const PORT: number = +(process.env.PORT || 3000);
 const app = express();
+const user = new User();
 
 /**
  * App Configuration
@@ -25,6 +28,9 @@ app.use(express.json());
 /**
  * Routes Definitions
  */
+app.get('/users', async (req, res) => {
+  res.json(await user.getAll());
+});
 
 /**
  * Server Activation
