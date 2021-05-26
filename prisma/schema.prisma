@@ -1,0 +1,105 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+model Post {
+  id          Int      @default(autoincrement()) @id
+  parentId    Int
+  title       String   @db.VarChar(255)
+  metaTitle   String   @db.VarChar(100)
+  slug        String   @db.VarChar(100)
+  summary     String
+  content     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+  published   Boolean  @default(false)
+  publishedAt DateTime
+  author      User     @relation(fields: [authorId], references: [id])
+  authorId    Int
+  tags        PostOnTag[]
+  categories  PostOnCategory[]
+  metas       PostOnMeta[]
+  comments    PostOnComment[]
+}
+
+model User {
+  id            Int       @default(autoincrement()) @id
+  email         String    @unique @db.VarChar(50)
+  firstName     String    @db.VarChar(50)
+  lastName      String    @db.VarChar(50)
+  mobile        String    @db.VarChar(15)
+  avatarUrl     String
+  passwordHash  String    @db.VarChar(32)
+  registeredAt  DateTime
+  lastLogin     DateTime
+  intro         String
+  profile       String
+  posts         Post[]
+}
+
+model Tag {
+  id          Int @default(autoincrement()) @id
+  title       String @db.VarChar(75)
+  metaTitle   String @db.VarChar(100)
+  slug        String @db.VarChar(100)
+  content     String
+  posts       PostOnTag[]
+}
+
+model PostOnTag {
+  postId  Int
+  tagId   Int
+
+  post    Post  @relation(fields: [postId], references: [id])
+  tag     Tag   @relation(fields: [tagId], references: [id])
+
+  @@id([postId, tagId])
+}
+
+model PostOnMeta {
+  id      Int     @default(autoincrement()) @id
+  postId  Int 
+  key     String  @db.VarChar(50)
+  content String
+  post    Post    @relation(fields: [postId], references: [id])
+}
+
+model Category {
+  id          Int @default(autoincrement()) @id
+  parentId    Int
+  title       String @db.VarChar(75)
+  metaTitle   String @db.VarChar(100)
+  slug        String @db.VarChar(100)
+  content     String
+  posts       PostOnCategory[]
+}
+
+model PostOnCategory {
+  postId      Int
+  categoryId  Int
+
+  post        Post      @relation(fields: [postId], references: [id])
+  category    Category  @relation(fields: [categoryId], references: [id])
+
+  @@id([postId, categoryId])
+}
+
+model PostOnComment {
+  id          Int       @default(autoincrement()) @id
+  postId      Int
+  parentId    Int
+  title       String    @db.VarChar(100)
+  published   Boolean   @default(false)
+  createdAt   DateTime  @default(now())
+  publishedAt DateTime
+  content     String
+  post        Post      @relation(fields: [postId], references: [id])
+}
