@@ -25,10 +25,10 @@ model Post {
   viewCount   Int      @default(0)
   author      User     @relation(fields: [authorId], references: [id])
   authorId    Int
-  tags        PostOnTag[]
-  categories  PostOnCategory[]
-  metas       PostOnMeta[]
-  comments    PostOnComment[]
+  tags        TagsOnPosts[]
+  categories  CategoriesOnPosts[]
+  metas       Meta[]
+  comments    Comment[]
 }
 
 model User {
@@ -57,10 +57,10 @@ model Tag {
   metaTitle   String @db.VarChar(100)
   slug        String @db.VarChar(100)
   content     String
-  posts       PostOnTag[]
+  posts       TagsOnPosts[]
 }
 
-model PostOnTag {
+model TagsOnPosts {
   postId  Int
   tagId   Int
 
@@ -70,7 +70,7 @@ model PostOnTag {
   @@id([postId, tagId])
 }
 
-model PostOnMeta {
+model Meta {
   id      Int     @default(autoincrement()) @id
   postId  Int 
   key     String  @db.VarChar(50)
@@ -85,10 +85,10 @@ model Category {
   metaTitle   String @db.VarChar(100)
   slug        String @db.VarChar(100)
   content     String
-  posts       PostOnCategory[]
+  posts       CategoriesOnPosts[]
 }
 
-model PostOnCategory {
+model CategoriesOnPosts {
   postId      Int
   categoryId  Int
 
@@ -98,7 +98,7 @@ model PostOnCategory {
   @@id([postId, categoryId])
 }
 
-model PostOnComment {
+model Comment {
   id          Int       @default(autoincrement()) @id
   postId      Int
   parentId    Int
