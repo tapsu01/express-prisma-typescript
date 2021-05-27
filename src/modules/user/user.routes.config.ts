@@ -1,6 +1,6 @@
 import { CommonRoutesConfig } from '../common/common.routes.config';
 import express from 'express';
-import userService from './services/user.service';
+import userService from './user.service';
 import userMiddleware from './middleware/user.middleware';
 
 export class UsersRoutes extends CommonRoutesConfig {
@@ -18,29 +18,26 @@ export class UsersRoutes extends CommonRoutesConfig {
         userService.createUser
       );
 
+    this.app.param('userId', userMiddleware.extractUserId);
+
     this.app
       .route('/users/:userId')
-      .all(
-        (
-          req: express.Request,
-          res: express.Response,
-          next: express.NextFunction
-        ) => {
-          next();
-        }
+      .all(userMiddleware.validateUserExists)
+      .get(userService.getUserById)
+      .delete(userService.removeUser);
+
+    this.app
+      .route('/users/:userId')
+      .put(
+        userMiddleware.validateRequiredUserBodyFields,
+        userMiddleware.validateSameEmailBelongToSameUser,
+        userService.updateUser
       )
-      .get((req: express.Request, res: express.Response) => {
-        res.status(200).send(`Get requested for Id: ${req.params.userId}`);
-      })
-      .put((req: express.Request, res: express.Response) => {
-        res.status(200).send(`PUT requested for Id: ${req.params.userId}`);
-      })
-      .patch((req: express.Request, res: express.Response) => {
-        res.status(200).send(`PATCH requested for id: ${req.params.userId}`);
-      })
-      .delete((req: express.Request, res: express.Response) => {
-        res.status(200).send(`DELETE requested for Id: ${req.params.userId}`);
-      });
+      .patch(
+        userMiddleware.validateRequiredUserBodyFields,
+        userMiddleware.validateSameEmailBelongToSameUser,
+        userService.updateUser
+      );
 
     return this.app;
   }

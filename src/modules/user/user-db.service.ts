@@ -1,16 +1,32 @@
 import debug from 'debug';
 import { PrismaClient, User } from '@prisma/client';
-import { CRUD } from '../../common/crud.interface';
+import { CRUD } from '../common/crud.interface';
 
 const log: debug.IDebugger = debug('app:in-memory-dao');
 const prisma = new PrismaClient();
 
 class UserDBService implements CRUD {
+  select: any;
+
+  constructor() {
+    this.select = {
+      id: true,
+      email: true,
+      name: true,
+      mobile: true,
+      avatarUrl: true,
+      registeredAt: true,
+      lastLogin: true,
+      intro: true,
+      profile: true,
+      role: true,
+      posts: true
+    };
+  }
+
   async list(limit: number, page: number) {
     const users = await prisma.user.findMany({
-      include: {
-        posts: true
-      },
+      select: this.select,
       skip: page * limit,
       take: limit
     });
@@ -22,7 +38,8 @@ class UserDBService implements CRUD {
     const user = await prisma.user.findFirst({
       where: {
         id: userId
-      }
+      },
+      select: this.select
     });
 
     return user;
@@ -30,21 +47,25 @@ class UserDBService implements CRUD {
 
   async deleteById(userId: number) {
     const user = await prisma.user.delete({
-      where: { id: userId }
+      where: { id: userId },
+      select: this.select
     });
     return user;
   }
 
-  async create(user: User) {
-    return await prisma.user.create({
-      data: user
+  async create(resource: User) {
+    const user = await prisma.user.create({
+      select: { id: true },
+      data: resource
     });
+    return user;
   }
 
   async updateById(userId: number, user: User) {
     return await prisma.user.update({
       where: { id: userId },
-      data: user
+      data: user,
+      select: this.select
     });
   }
 
@@ -57,7 +78,8 @@ class UserDBService implements CRUD {
 
   async getUserByEmail(email: string) {
     return await prisma.user.findFirst({
-      where: { email }
+      where: { email },
+      select: { id: true }
     });
   }
 }

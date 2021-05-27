@@ -1,5 +1,5 @@
 import express from 'express';
-import userDbService from '../models/user-db.service';
+import userDbService from '../user-db.service';
 import debug from 'debug';
 
 const log: debug.IDebugger = debug('app:user-controller');
@@ -17,6 +17,15 @@ class UserMiddleware {
         error: `Missing required fields email and password`
       });
     }
+  }
+
+  async extractUserId(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    req.body.id = +req.params.userId;
+    next();
   }
 
   async validateSameEmailDoesntExist(
