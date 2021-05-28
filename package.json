@@ -18,13 +18,15 @@
   },
   "dependencies": {
     "@prisma/client": "2.23.0",
-    "bcrypt": "^5.0.1",
+    "argon2": "^0.27.2",
     "cors": "^2.8.5",
     "debug": "^4.3.1",
     "dotenv": "^10.0.0",
     "express": "^4.17.1",
     "express-winston": "^4.1.0",
+    "fastest-validator": "^1.11.0",
     "helmet": "^4.6.0",
+    "pug": "^3.0.2",
     "winston": "^3.3.3"
   },
   "devDependencies": {

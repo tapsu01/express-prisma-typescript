@@ -1,5 +1,7 @@
 {
   "compilerOptions": {
+    "experimentalDecorators": true,
+    "allowSyntheticDefaultImports": true,
     "target": "es6",
     "module": "commonjs",
     "strict": true,
@@ -7,6 +9,16 @@
     "esModuleInterop": true, 
     "skipLibCheck": true,  
     "inlineSourceMap": true,
-    "forceConsistentCasingInFileNames": true
+    "sourceMap": false,
+    "forceConsistentCasingInFileNames": true,
+    "types": ["node"],
+    "moduleResolution": "node",
+    "typeRoots": ["node_modules/@types", "@types"],
+    "rootDir": "./",
+    "baseUrl": "./",
+    "paths": {
+      "core/*": ["core/*"],
+      "lib/*": ["src/lib/*"]
+    }
   }
 }

@@ -1,9 +1,9 @@
 import debug from 'debug';
-import { PrismaClient, User } from '@prisma/client';
+import prisma from '../../lib/prisma';
+import { User } from '@prisma/client';
 import { CRUD } from '../common/crud.interface';
 
 const log: debug.IDebugger = debug('app:in-memory-dao');
-const prisma = new PrismaClient();
 
 class UserDBService implements CRUD {
   select: any;
@@ -27,7 +27,7 @@ class UserDBService implements CRUD {
   async list(limit: number, page: number) {
     const users = await prisma.user.findMany({
       select: this.select,
-      skip: page * limit,
+      skip: (page - 1) * limit,
       take: limit
     });
 

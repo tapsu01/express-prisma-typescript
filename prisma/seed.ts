@@ -1,16 +1,14 @@
 import { PrismaClient, Prisma } from '@prisma/client';
-import bcrypt from 'bcrypt';
+import argon2 from 'argon2';
 
 const prisma = new PrismaClient();
-const salt = bcrypt.genSaltSync(10);
-const password = bcrypt.hashSync('12345678', salt);
 const date = new Date('2021-05-27');
 
 const userData: Prisma.UserCreateInput[] = [
   {
     name: 'Alice',
     email: 'alice@prisma.io',
-    passwordHash: password,
+    password: 'password',
     registeredAt: date,
     posts: {
       create: [
@@ -26,7 +24,7 @@ const userData: Prisma.UserCreateInput[] = [
   {
     name: 'Nilu',
     email: 'nilu@prisma.io',
-    passwordHash: password,
+    password: 'password',
     registeredAt: date,
     posts: {
       create: [
@@ -42,7 +40,7 @@ const userData: Prisma.UserCreateInput[] = [
   {
     name: 'Mahmoud',
     email: 'mahmoud@prisma.io',
-    passwordHash: password,
+    password: 'password',
     registeredAt: date,
     posts: {
       create: [
@@ -64,7 +62,9 @@ const userData: Prisma.UserCreateInput[] = [
 
 async function main() {
   console.log(`Start seeding ...`);
+  const password = await argon2.hash('12345678');
   for (const u of userData) {
+    u.password = password;
     const user = await prisma.user.create({
       data: u
     });

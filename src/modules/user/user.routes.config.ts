@@ -1,7 +1,7 @@
 import { CommonRoutesConfig } from '../common/common.routes.config';
 import express from 'express';
 import userService from './user.service';
-import userMiddleware from './middleware/user.middleware';
+import userMiddleware from './middlewares/user.middleware';
 
 export class UsersRoutes extends CommonRoutesConfig {
   constructor(app: express.Application) {
@@ -15,8 +15,10 @@ export class UsersRoutes extends CommonRoutesConfig {
       .post(
         userMiddleware.validateRequiredUserBodyFields,
         userMiddleware.validateSameEmailDoesntExist,
-        userService.createUser
+        userService.storeUser
       );
+
+    this.app.route('/users/create').get(userService.createUser);
 
     this.app.param('userId', userMiddleware.extractUserId);
 
@@ -33,11 +35,7 @@ export class UsersRoutes extends CommonRoutesConfig {
         userMiddleware.validateSameEmailBelongToSameUser,
         userService.updateUser
       )
-      .patch(
-        userMiddleware.validateRequiredUserBodyFields,
-        userMiddleware.validateSameEmailBelongToSameUser,
-        userService.updateUser
-      );
+      .patch(userMiddleware.validatePatchEmail, userService.updateUser);
 
     return this.app;
   }

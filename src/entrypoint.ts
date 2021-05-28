@@ -9,8 +9,10 @@ import * as expressWinston from 'express-winston';
 import debug from 'debug';
 import cors from 'cors';
 import helmet from 'helmet';
+import path from 'path';
 import { CommonRoutesConfig } from './modules/common/common.routes.config';
 import { UsersRoutes } from './modules/user/user.routes.config';
+import { PostsRoutes } from './modules/post/post.routes.config';
 
 const NODE_ENV = process.env.NODE_ENV || 'development';
 dotenv.config({ path: `.env.${NODE_ENV}` });
@@ -40,6 +42,9 @@ if (!process.env.DEBUG) {
 /**
  * App Configuration
  */
+app.set('views', './views');
+app.set('view engine', 'pug');
+app.use(express.static(path.join(__dirname, 'public')));
 app.use(helmet());
 app.use(cors());
 app.use(express.json());
@@ -49,11 +54,7 @@ app.use(expressWinston.logger(loggerOptions));
  * Routes Definitions
  */
 routes.push(new UsersRoutes(app));
-
-const runningMessage = `Server running at http://localhost:${port}`;
-app.get('/', (req: express.Request, res: express.Response) => {
-  res.status(200).send(runningMessage);
-});
+routes.push(new PostsRoutes(app));
 
 /**
  * Server Activation
@@ -63,7 +64,7 @@ server.listen(port, () => {
     debugLog(`Routes configured for ${route.getName()}`);
   });
 
-  console.log(runningMessage);
+  console.log(`Server running at http://localhost:${port}`);
 });
 
 /**
