@@ -222,6 +222,11 @@
     "@types/mime" "^1"
     "@types/node" "*"
 
+"@types/slug@^5.0.0":
+  version "5.0.0"
+  resolved "https://registry.yarnpkg.com/@types/slug/-/slug-5.0.0.tgz#5b37c2b968df392be8fbc1b1fa749d407dd96616"
+  integrity sha512-rfksHIaq1HwSeAZ0iDsdlr0/WdxBF16pwggcj+sAvnXQySU69Jgl4HklodSpT1pzwPSHIuctfS+fKvad25InKQ==
+
 "@webassemblyjs/ast@1.11.0":
   version "1.11.0"
   resolved "https://registry.yarnpkg.com/@webassemblyjs/ast/-/ast-1.11.0.tgz#a5aa679efdc9e51707a4207139da57920555961f"
@@ -2439,6 +2444,11 @@ simple-swizzle@^0.2.2:
   integrity sha1-pNprY1/8zMoz9w0Xy5JZLeleVXo=
   dependencies:
     is-arrayish "^0.3.1"
+
+slug@^5.0.1:
+  version "5.0.1"
+  resolved "https://registry.yarnpkg.com/slug/-/slug-5.0.1.tgz#de3bb7356b7aac39962be8453d32a0ecb49f65a1"
+  integrity sha512-2Jf7lg8IwV4yC93hdd009WJKrZHLB0lpNVHzGdlpgDgJixJuOlUHG/MaD446lQG2yjh7fQFrJeNW5agWvxMHCg==
 
 source-list-map@^2.0.1:
   version "2.0.1"

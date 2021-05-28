@@ -14,6 +14,7 @@ export class PostsRoutes extends CommonRoutesConfig {
       .get(postService.list)
       .post(
         postMiddleware.validateRequiredPostBodyFields,
+        postMiddleware.validatePatchSlug,
         postService.storePost
       );
 
