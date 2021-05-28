@@ -12,37 +12,43 @@ generator client {
 
 model Post {
   id          Int      @default(autoincrement()) @id
-  parentId    Int
+  parentId    Int?
   title       String   @db.VarChar(255)
-  metaTitle   String   @db.VarChar(100)
-  slug        String   @db.VarChar(100)
-  summary     String
+  metaTitle   String?  @db.VarChar(100)
+  slug        String?  @db.VarChar(100)
+  summary     String?
   content     String?
   createdAt   DateTime @default(now())
   updatedAt   DateTime @updatedAt
   published   Boolean  @default(false)
-  publishedAt DateTime
+  publishedAt DateTime @default(now())
+  viewCount   Int      @default(0)
   author      User     @relation(fields: [authorId], references: [id])
   authorId    Int
-  tags        PostOnTag[]
-  categories  PostOnCategory[]
-  metas       PostOnMeta[]
-  comments    PostOnComment[]
+  tags        TagsOnPosts[]
+  categories  CategoriesOnPosts[]
+  metas       Meta[]
+  comments    Comment[]
 }
 
 model User {
   id            Int       @default(autoincrement()) @id
   email         String    @unique @db.VarChar(50)
-  firstName     String    @db.VarChar(50)
-  lastName      String    @db.VarChar(50)
-  mobile        String    @db.VarChar(15)
-  avatarUrl     String
-  passwordHash  String    @db.VarChar(32)
-  registeredAt  DateTime
-  lastLogin     DateTime
-  intro         String
-  profile       String
+  name          String?
+  mobile        String?   @db.VarChar(15)
+  avatarUrl     String?
+  password      String?
+  registeredAt  DateTime  @default(now())
+  lastLogin     DateTime?
+  intro         String?
+  profile       String?
+  role          Role      @default(USER)
   posts         Post[]
+}
+
+enum Role {
+  USER
+  ADMIN
 }
 
 model Tag {
@@ -51,10 +57,10 @@ model Tag {
   metaTitle   String @db.VarChar(100)
   slug        String @db.VarChar(100)
   content     String
-  posts       PostOnTag[]
+  posts       TagsOnPosts[]
 }
 
-model PostOnTag {
+model TagsOnPosts {
   postId  Int
   tagId   Int
 
@@ -64,7 +70,7 @@ model PostOnTag {
   @@id([postId, tagId])
 }
 
-model PostOnMeta {
+model Meta {
   id      Int     @default(autoincrement()) @id
   postId  Int 
   key     String  @db.VarChar(50)
@@ -79,10 +85,10 @@ model Category {
   metaTitle   String @db.VarChar(100)
   slug        String @db.VarChar(100)
   content     String
-  posts       PostOnCategory[]
+  posts       CategoriesOnPosts[]
 }
 
-model PostOnCategory {
+model CategoriesOnPosts {
   postId      Int
   categoryId  Int
 
@@ -92,7 +98,7 @@ model PostOnCategory {
   @@id([postId, categoryId])
 }
 
-model PostOnComment {
+model Comment {
   id          Int       @default(autoincrement()) @id
   postId      Int
   parentId    Int
