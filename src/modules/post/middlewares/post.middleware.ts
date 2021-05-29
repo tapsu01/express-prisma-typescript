@@ -1,4 +1,5 @@
 import express from 'express';
+import slug from 'slug';
 import fastestValidator from '../../../lib/fastest-validator';
 import { CreatePostRule } from '../validators/post.validator';
 
@@ -12,20 +13,31 @@ class PostMiddleware {
     next();
   }
 
+  async validatePatchSlug(
+    req: express.Request,
+    res: express.Response,
+    next: express.NextFunction
+  ) {
+    if (!req.body.slug) {
+      req.body.slug = slug(req.body.title);
+    }
+    next();
+  }
+
   async validateRequiredPostBodyFields(
     req: express.Request,
     res: express.Response,
     next: express.NextFunction
   ) {
-    console.log('body >> ', req.body);
-    console.log('rule >> ', CreatePostRule);
     const check = fastestValidator.compile(CreatePostRule);
-    check(req.body);
 
-    if (check(req.body)) {
-      next();
+    if (typeof check(req.body) !== 'boolean') {
+      res.status(400).send({
+        error: 'Validate errors',
+        data: check(req.body)
+      });
     } else {
-      res.send('xxx');
+      next();
     }
   }
 }
