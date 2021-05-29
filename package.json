@@ -14,7 +14,8 @@
     "webpack": "webpack --config webpack.config.ts",
     "migrate:dev": "prisma migrate dev --name init --schema prisma/schema.prisma",
     "preinstall": "cat .env.development | grep DATABASE_URL | tee > prisma/.env",
-    "seed": "prisma db seed --preview-feature"
+    "seed": "prisma db seed --preview-feature",
+    "migrate:reset": "prisma migrate reset --skip-seed"
   },
   "dependencies": {
     "@prisma/client": "2.23.0",
