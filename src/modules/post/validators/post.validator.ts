@@ -32,6 +32,7 @@ export const CreatePostRule: ActionParams = {
   },
   createdAt: {
     type: 'date',
+    convert: true,
     default: () => new Date()
   },
   published: {
@@ -41,6 +42,7 @@ export const CreatePostRule: ActionParams = {
   },
   publishedAt: {
     type: 'date',
+    convert: true,
     optional: true,
     default: () => new Date()
   },

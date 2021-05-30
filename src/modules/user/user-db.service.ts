@@ -77,9 +77,22 @@ class UserDBService implements CRUD {
   }
 
   async getUserByEmail(email: string) {
+    const select = this.select;
     return await prisma.user.findFirst({
       where: { email },
-      select: { id: true }
+      select: {
+        id: true,
+        email: true,
+        name: true,
+        mobile: true,
+        avatarUrl: true,
+        registeredAt: true,
+        lastLogin: true,
+        intro: true,
+        profile: true,
+        role: true,
+        password: true
+      }
     });
   }
 }

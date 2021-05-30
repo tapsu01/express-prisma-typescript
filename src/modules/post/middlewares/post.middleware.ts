@@ -31,7 +31,7 @@ class PostMiddleware {
   ) {
     const check = fastestValidator.compile(CreatePostRule);
 
-    if (typeof check(req.body) !== 'boolean') {
+    if (check(req.body) !== true) {
       res.status(400).send({
         error: 'Validate errors',
         data: check(req.body)
