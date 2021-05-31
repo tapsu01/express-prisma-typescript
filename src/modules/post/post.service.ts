@@ -15,7 +15,9 @@ class PostService {
   }
 
   async storePost(req: express.Request, res: express.Response) {
-    res.status(201).send(req.body);
+    let post: Post;
+    log((post = await postDbService.create(req.body)));
+    res.status(201).send(post);
   }
 
   async getPostById(req: express.Request, res: express.Response) {

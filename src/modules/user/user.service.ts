@@ -28,18 +28,21 @@ class UserService {
       req.body.password = await argon2.hash(req.body.password);
     }
 
+    const { id: userId, ...resource } = req.body;
     let user;
-    log((user = await userDbService.updateById(req.body.id, req.body)));
+    log((user = await userDbService.updateById(userId, resource)));
     res.status(200).send(user);
   }
 
   async getUserById(req: express.Request, res: express.Response) {
-    const user = await userDbService.findById(req.body.id);
+    const { id: userId } = req.body;
+    const user = await userDbService.findById(userId);
     res.status(200).send(user);
   }
 
   async removeUser(req: express.Request, res: express.Response) {
-    log(await userDbService.deleteById(req.body.id));
+    const { id: userId } = req.body;
+    log(await userDbService.deleteById(userId));
     res.status(204).send();
   }
 }

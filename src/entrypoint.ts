@@ -1,7 +1,13 @@
 /**
- * Required External Modules
+ * Load Environment Variables
  */
 import * as dotenv from 'dotenv';
+const NODE_ENV = process.env.NODE_ENV || 'development';
+dotenv.config({ path: `.env.${NODE_ENV}` });
+
+/**
+ * Required External Modules
+ */
 import express from 'express';
 import * as http from 'http';
 import * as winston from 'winston';
@@ -11,11 +17,9 @@ import cors from 'cors';
 import helmet from 'helmet';
 import path from 'path';
 import { CommonRoutesConfig } from './modules/common/common.routes.config';
+import { AuthRoutes } from './modules/auth/auth.routes.config';
 import { UsersRoutes } from './modules/user/user.routes.config';
 import { PostsRoutes } from './modules/post/post.routes.config';
-
-const NODE_ENV = process.env.NODE_ENV || 'development';
-dotenv.config({ path: `.env.${NODE_ENV}` });
 
 /**
  * App Variables
@@ -53,6 +57,7 @@ app.use(expressWinston.logger(loggerOptions));
 /**
  * Routes Definitions
  */
+routes.push(new AuthRoutes(app));
 routes.push(new UsersRoutes(app));
 routes.push(new PostsRoutes(app));
 

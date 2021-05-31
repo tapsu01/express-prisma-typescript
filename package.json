@@ -27,6 +27,7 @@
     "express-winston": "^4.1.0",
     "fastest-validator": "^1.11.0",
     "helmet": "^4.6.0",
+    "jsonwebtoken": "^8.5.1",
     "pug": "^3.0.2",
     "slug": "^5.0.1",
     "winston": "^3.3.3"
@@ -38,6 +39,7 @@
     "@types/dotenv": "^8.2.0",
     "@types/express": "^4.17.12",
     "@types/helmet": "^4.0.0",
+    "@types/jsonwebtoken": "^8.5.1",
     "@types/node": "^15.6.1",
     "@types/slug": "^5.0.0",
     "git-cz": "^4.7.6",
